@@ -48,7 +48,7 @@ app.use((err, req, res, next) => {
 let p = db
     .then((res) => {
         return new Promise((resolve) => {
-            server.listen(appConfig.server.port, appConfig.server.hostname, () => {
+            server.listen(process.env.PORT || appConfig.server.port, appConfig.server.hostname, () => {
                 console.log('Server start listen port: ' + appConfig.server.port);
                 resolve();
             });
