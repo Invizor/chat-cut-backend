@@ -10,6 +10,6 @@ router.get('/', authService(), threadCtrl.getThread.bind(threadCtrl));
 router.get('/:id', authService(), threadCtrl.getThread.bind(threadCtrl));
 router.post('/create', authService(), threadCtrl.createThread.bind(threadCtrl));
 router.post('/remove', authService(), threadCtrl.removeThread.bind(threadCtrl));
-router.post('/get', authService(), threadCtrl.getThreads.bind(threadCtrl));
+router.get('/get', authService(), threadCtrl.getThreads.bind(threadCtrl));
 
 module.exports = router;
