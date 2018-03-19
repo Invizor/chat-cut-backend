@@ -22,7 +22,7 @@ class BaseController {
     checkBody(req, fields) {
         let isValid = true;
         fields.forEach(field => {
-          if (!req.checkBody(field)) {
+          if (!req.body[field]) {
             isValid = false;
           }
         });
@@ -37,8 +37,9 @@ class BaseController {
      */
     checkQuery(req, fields) {
       let isValid = true;
+      console.log("checkQuery");
       fields.forEach(field => {
-        if (!req.checkQuery(field)) {
+        if (!req.query[field]) {
           isValid = false;
         }
       });

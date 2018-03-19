@@ -88,6 +88,7 @@ class userController extends BaseController {
           return next(errorService.user.not_found);
         }
         res.send({
+          success: true,
           id: user.id
         });
       })
