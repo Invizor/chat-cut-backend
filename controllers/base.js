@@ -20,19 +20,13 @@ class BaseController {
      * @return {boolean}
      */
     checkBody(req, fields) {
-        if (!req.body) {
-            return false;
-        }
-        if (!fields) {
-            return true;
-        }
-        let result = true;
-        _.each(fields, (field) => {
-            if (!req.body[field]) {
-                result = false;
-            }
+        let isValid = true;
+        fields.forEach(field => {
+          if (!req.checkBody(field)) {
+            isValid = false;
+          }
         });
-        return result;
+        return isValid;
     }
 
     /**
@@ -41,18 +35,14 @@ class BaseController {
      * @param [fields]
      * @return {boolean}
      */
-    checkQuery(req, fields, useOr) {
-        if (!req.query) {
-            return false;
+    checkQuery(req, fields) {
+      let isValid = true;
+      fields.forEach(field => {
+        if (!req.checkQuery(field)) {
+          isValid = false;
         }
-        if (!fields) {
-            return true;
-        }
-        let found = _.pick(req.query, fields);
-        if (_.size(found) != _.size(fields) && !useOr) {
-            return false;
-        }
-        return (!(useOr && _.size(found) <= 0));
+      });
+      return isValid;
     }
 
     /**
