@@ -140,19 +140,36 @@ class threadController extends BaseController {
             return next(errorService.user.access_user);
         }
 
-        threadModel.find({ listIdUsers: { "$in" : [req.query.iduser]} })
-            .then(threadsList => {
+      userModel.findOne({"_id": req.query.iduser})
+        .then(user => {
+          if (!user) {
+            return next(errorService.user.not_found);
+          }
+          if(user.listIdThreads.length === 0) {
+            res.send({
+              success: true,
+              listThreads: []
+            });
+          } else {
+            threadModel.find({ "_id": { "$in" : [user.listIdThreads]} })
+              .then(threadsList => {
                 if(!threadsList || !Array.isArray(threadsList)) {
-                    return next(errorService.user.thread_not_found);
+                  return next(errorService.user.thread_not_found);
                 }
                 res.send({
-                    success: true,
-                    listThreads: threadsList
+                  success: true,
+                  listThreads: threadsList
                 });
-            })
-            .catch(error => {
+              })
+              .catch(error => {
                 return next(errorService.user.thread_not_found);
-            });
+              });
+          }
+        })
+        .catch(error => {
+          return next(errorService.user.not_found);
+        });
+
     }
 }
 
