@@ -23,42 +23,42 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    next();
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  next();
 });
 
 app.use(require('./routes'));
 
 // Catch other errors
 app.use((err, req, res, next) => {
-    res.send({
-        success: false,
-        error: err
-    });
+  res.send({
+    success: false,
+    error: err
+  });
 });
 
 // Initialize server
 let p = db
-    .then((res) => {
-        return new Promise((resolve) => {
-            server.listen(process.env.PORT || appConfig.server.port, appConfig.server.hostname, () => {
-                console.log('Server start listen port: ' + appConfig.server.port);
-                resolve();
-            });
-        })
+  .then((res) => {
+    return new Promise((resolve) => {
+      server.listen(process.env.PORT || appConfig.server.port, appConfig.server.hostname, () => {
+        console.log('Server start listen port: ' + appConfig.server.port);
+        resolve();
+      });
     })
-    .then(() => app);
+  })
+  .then(() => app);
 
 p.catch(err => {
-    log.error('Initialise Server Error', err);
-    throw err;
+  console.log('Initialise Server Error');
+  throw err;
 });
 
 module.exports = app;
