@@ -131,14 +131,8 @@ class threadController extends BaseController {
   }
 
   getThreads(req, res, next) {
-    if (!this.checkQuery(req, ['iduser'])) {
-      return next(errorService.api.bad_params);
-    }
     let decode = tokenService.decodeToken(req.headers.authorization);
-    if (decode.id !== req.query.iduser) {
-      return next(errorService.user.access_user);
-    }
-    userModel.findOne({"_id": req.query.iduser})
+    userModel.findOne({"_id": decode.id})
       .then(user => {
         if (!user) {
           return next(errorService.user.not_found);
