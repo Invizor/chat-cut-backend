@@ -97,6 +97,28 @@ class userController extends BaseController {
       });
   }
 
+  getUserName(req, res, next) {
+    if (!this.checkBody(req, ['listIdUsers'])) {
+      return next(errorService.api.bad_params);
+    }
+    return userModel.find({
+      _id: {$in: req.body.listIdUsers}
+    })
+      .then(listUsersFilter => {
+        let objUserName = {};
+        listUsersFilter.forEach(user => {
+          objUserName[user['_id']] = user.username;
+        });
+        res.send({
+          success: true,
+          usersName: objUserName
+        });
+      })
+      .catch((error) => {
+        next(errorService.dbo.default);
+      })
+  }
+
   addThread(listIdUsers, idThread) {
     if (Array.isArray(listIdUsers) && idThread) {
       return userModel.find({
