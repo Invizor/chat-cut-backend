@@ -6,7 +6,6 @@ const userModel = require('../models/user-model');
 let auth = function() {
     // Return middleware function
     return (req, res, next) => {
-        console.log("req.headers.authorization", req.headers.authorization);
         //Find token in request
         let token = null;
         if(req.headers.authorization) {
@@ -19,11 +18,9 @@ let auth = function() {
         if (!decode || !decode.id || !decode.date) {
             return next(errorService.user.not_authorized);
         }
-        console.log("decode", decode);
         userModel
             .findOne({_id: decode.id})
             .then(user => {
-                console.log("user", user);
                 if (!user) {
                     return next(errorService.user.not_authorized);
                 }

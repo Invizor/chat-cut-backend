@@ -148,10 +148,32 @@ class threadController extends BaseController {
               if (!threadsList || !Array.isArray(threadsList)) {
                 return next(errorService.user.thread_not_found);
               }
-              res.send({
-                success: true,
-                listThreads: threadsList
-              });
+
+              let promAll = Promise.all(threadsList.map(thread => {
+                return new Promise((resolve, reject) => {
+                  messageModel.find({idThread: thread._id})
+                    .then(messagesList => {
+                      let resultThread = thread;
+                      if(!messagesList) {
+                        reject(errorService.user.find_messages_error);
+                      }
+                      resultThread.messagesList = messagesList;
+                      resolve(resultThread);
+                    })
+                    .catch(error => {
+                      reject(error);
+                    })
+                });
+              }));
+              promAll.then((threadsAll) => {
+                  res.send({
+                    success: true,
+                    listThreads: threadsAll
+                  });
+                })
+                .catch((error) => {
+                  return next(errorService.user.find_messages_error);
+                })
             })
             .catch(error => {
               return next(errorService.user.thread_not_found);
