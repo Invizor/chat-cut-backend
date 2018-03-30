@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const Schema = new mongoose.Schema({
   listIdUsers: {type: Array},
   createDate: {type: Date},
-  messagesList: {type: Array}
+  messageList: {type: Array}
 });
 
 module.exports = mongoose.model('Thread', Schema);

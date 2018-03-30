@@ -152,12 +152,12 @@ class threadController extends BaseController {
               let promAll = Promise.all(threadsList.map(thread => {
                 return new Promise((resolve, reject) => {
                   messageModel.find({idThread: thread._id})
-                    .then(messagesList => {
+                    .then(messageList => {
                       let resultThread = thread;
-                      if(!messagesList) {
+                      if(!messageList) {
                         reject(errorService.user.find_messages_error);
                       }
-                      resultThread.messagesList = messagesList;
+                      resultThread.messageList = messageList;
                       resolve(resultThread);
                     })
                     .catch(error => {
