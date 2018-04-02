@@ -102,7 +102,7 @@ class MessageController extends BaseController {
                 if(thread.listIdUsers.indexOf(decode.id) === -1) {
                     return next(errorService.user.thread_access);
                 }
-                messageModel.find({idThread: req.query.idThread}).sort({date: -1})
+                messageModel.find({idThread: req.query.idThread}).sort({date: 1})
                     .then(messagesList => {
                         if(!messagesList) {
                             return next(errorService.user.find_messages_error);

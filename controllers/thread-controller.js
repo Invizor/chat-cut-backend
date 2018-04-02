@@ -143,7 +143,7 @@ class threadController extends BaseController {
             listThreads: []
           });
         } else {
-          threadModel.find({"_id": {"$in": [user.listIdThreads]}}).sort({createDate: -1})
+          threadModel.find({"_id": {"$in": [user.listIdThreads]}}).sort({createDate: 1})
             .then(threadsList => {
               if (!threadsList || !Array.isArray(threadsList)) {
                 return next(errorService.user.thread_not_found);
@@ -151,7 +151,7 @@ class threadController extends BaseController {
 
               let promAll = Promise.all(threadsList.map(thread => {
                 return new Promise((resolve, reject) => {
-                  messageModel.find({idThread: thread._id}).sort({date: -1})
+                  messageModel.find({idThread: thread._id}).sort({date: 1})
                     .then(messageList => {
                       let resultThread = thread;
                       if(!messageList) {
