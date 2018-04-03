@@ -143,7 +143,7 @@ class threadController extends BaseController {
             listThreads: []
           });
         } else {
-          threadModel.find({"_id": {"$in": [user.listIdThreads]}}).sort({createDate: 1})
+          threadModel.find({"_id": {"$in": user.listIdThreads}}).sort({createDate: 1})
             .then(threadsList => {
               if (!threadsList || !Array.isArray(threadsList)) {
                 return next(errorService.user.thread_not_found);
