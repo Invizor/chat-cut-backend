@@ -11,5 +11,6 @@ router.get('/get', authService(), threadCtrl.getThreads.bind(threadCtrl));
 router.get('/:id', authService(), threadCtrl.getThread.bind(threadCtrl));
 router.post('/create', authService(), threadCtrl.createThread.bind(threadCtrl));
 router.post('/remove', authService(), threadCtrl.removeThread.bind(threadCtrl));
+router.post('/remove-user', authService(), threadCtrl.removeUserFromThread.bind(threadCtrl));
 
 module.exports = router;

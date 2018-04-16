@@ -149,11 +149,23 @@ class userController extends BaseController {
     if (Array.isArray(listIdUsers) && idThread) {
       let prAll = [];
       listIdUsers.forEach(idUser => {
-        prAll.push(userModel.findOneAndUpdate({
-          _id: idUser
-        }, {
-          $pull: {listIdThreads: {$in: [idThread]}}
-        }))
+        prAll.push(
+          new Promise((resolve, reject) => {
+            userModel.findOneAndUpdate({
+              _id: idUser
+            }, {
+              $pull: {listIdThreads: {$in: [idThread]}}
+            })
+              .then((data) => {
+                console.log("data",data);
+                resolve(data);
+              })
+              .catch(error => {
+                console.log("error",error);
+                reject(error);
+              })
+          })
+        );
       });
       return Promise.all(prAll);
     } else {

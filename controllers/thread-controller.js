@@ -130,6 +130,70 @@ class threadController extends BaseController {
       });
   }
 
+  removeUserFromThread(req, res, next) {
+    if (!this.checkBody(req, ['id'])) {
+      return next(errorService.api.bad_params);
+    }
+
+    let decode = tokenService.decodeToken(req.headers.authorization);
+
+    threadModel.findOne({"_id": req.body.id})
+      .then((thread) => {
+        console.log("thread", thread);
+        if (!thread) {
+          return next(errorService.user.thread_not_found);
+        }
+        if (thread.listIdUsers.indexOf(decode.id) === -1) {
+          return next(errorService.user.thread_access);
+        }
+        if(thread.listIdUsers.length === 1) {
+          return threadModel.remove({"_id": thread.id})
+            .then(() => {
+              return thread;
+            })
+            .catch(() => {
+              return next(errorService.user.thread_not_found);
+            });
+        } else {
+          let changeThread = Object.assign(thread);
+          changeThread.listIdUsers = changeThread.listIdUsers.filter((itemListIdUser) => {
+            console.log(itemListIdUser, ' ', decode.id);
+            return !(itemListIdUser === decode.id);
+          });
+          return threadModel.update({"_id": req.body.id}, changeThread)
+            .then(result => {
+              return thread;
+            })
+            .catch((error) => {
+              return next(errorService.user.remove_user_from_thread_error);
+            })
+        }
+      })
+      .then(thread => {
+        userCtrl.removeThread([decode.id], thread._id)
+          .then(() => {
+            return true;
+          })
+          .catch(() => {
+            return next(errorService.user.not_found);
+          })
+      })
+      .then(() => {
+        messageModel.remove({idThread: req.body.id})
+          .then(() => {
+            res.send({
+              success: true
+            });
+          })
+          .catch(error => {
+            return next(errorService.user.message_remove_error);
+          })
+      })
+      .catch(error => {
+        return next(errorService.user.thread_not_found);
+      });
+  }
+
   getThreads(req, res, next) {
     let decode = tokenService.decodeToken(req.headers.authorization);
     userModel.findOne({"_id": decode.id})
