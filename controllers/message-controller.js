@@ -25,7 +25,8 @@ class MessageController extends BaseController {
             idThread: req.body.idThread,
             idUser: decode.id,
             text: req.body.text,
-            date: Date.now()
+            date: Date.now(),
+            files: req.body.files || []
         });
 
         threadModel.findOne({"_id": req.body.idThread})

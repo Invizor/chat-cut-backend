@@ -97,7 +97,7 @@ class userController extends BaseController {
       });
   }
 
-  getUserName(req, res, next) {
+  getUserInfo(req, res, next) {
     if (!this.checkBody(req, ['listIdUsers'])) {
       return next(errorService.api.bad_params);
     }
@@ -105,13 +105,16 @@ class userController extends BaseController {
       _id: {$in: req.body.listIdUsers}
     })
       .then(listUsersFilter => {
-        let objUserName = {};
+        let objUserInfo = {};
         listUsersFilter.forEach(user => {
-          objUserName[user['_id']] = user.username;
+          objUserInfo[user['_id']] = {
+            username: user.username,
+            avatar: user.avatar
+          }
         });
         res.send({
           success: true,
-          usersName: objUserName
+          data: objUserInfo
         });
       })
       .catch((error) => {
@@ -157,11 +160,9 @@ class userController extends BaseController {
               $pull: {listIdThreads: {$in: [idThread]}}
             })
               .then((data) => {
-                console.log("data",data);
                 resolve(data);
               })
               .catch(error => {
-                console.log("error",error);
                 reject(error);
               })
           })

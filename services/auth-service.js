@@ -17,6 +17,8 @@ let auth = function() {
         let decode = tokenService.decodeToken(req.headers.authorization);
         if (!decode || !decode.id || !decode.date) {
             return next(errorService.user.not_authorized);
+        } else {
+            req.userObj = decode;
         }
         userModel
             .findOne({_id: decode.id})

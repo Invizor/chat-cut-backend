@@ -10,7 +10,7 @@ router.get('/', authService(), userCtrl.getUserByToken.bind(userCtrl));
 router.post('/register', userCtrl.registerUser.bind(userCtrl));
 router.post('/login', userCtrl.loginUser.bind(userCtrl));
 router.post('/find', userCtrl.findUser.bind(userCtrl));
-router.post('/get-users-name', userCtrl.getUserName.bind(userCtrl));
+router.post('/get-users-info', userCtrl.getUserInfo.bind(userCtrl));
 
 
 module.exports = router;

@@ -11,6 +11,7 @@ const Schema = new mongoose.Schema({
     email: {type: String, unique: true, required: true},
     name: {type: String},
     surname: {type: String},
+    avatar: {type: String},
     listIdThreads: {type: Array}
 });
 

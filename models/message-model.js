@@ -8,7 +8,8 @@ const Schema = new mongoose.Schema({
     idThread: {type: String},
     idUser: {type: String},
     text: {type: String},
-    date: {type: Date}
+    date: {type: Date},
+    files: {type: Array}
 });
 
 module.exports = mongoose.model('Message', Schema);

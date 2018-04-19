@@ -191,6 +191,24 @@ const errList = {
       code: 7001,
       description: 'Props not found'
     }
+  },
+  file_load: {
+    empty_load_file: {
+      code: 7200,
+      description: 'empty load file'
+    },
+    big_size_file: {
+      code: 7201,
+      description: 'big size file'
+    },
+    not_load_file: {
+      code: 7202,
+      description: 'file not load to file server'
+    },
+    not_add_url_for_user: {
+      code: 7202,
+      description: 'url file was not add for user'
+    }
   }
 };
 

@@ -139,7 +139,6 @@ class threadController extends BaseController {
 
     threadModel.findOne({"_id": req.body.id})
       .then((thread) => {
-        console.log("thread", thread);
         if (!thread) {
           return next(errorService.user.thread_not_found);
         }
@@ -157,7 +156,6 @@ class threadController extends BaseController {
         } else {
           let changeThread = Object.assign(thread);
           changeThread.listIdUsers = changeThread.listIdUsers.filter((itemListIdUser) => {
-            console.log(itemListIdUser, ' ', decode.id);
             return !(itemListIdUser === decode.id);
           });
           return threadModel.update({"_id": req.body.id}, changeThread)

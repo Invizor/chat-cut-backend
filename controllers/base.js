@@ -37,7 +37,6 @@ class BaseController {
      */
     checkQuery(req, fields) {
       let isValid = true;
-      console.log("checkQuery");
       fields.forEach(field => {
         if (!req.query[field]) {
           isValid = false;
